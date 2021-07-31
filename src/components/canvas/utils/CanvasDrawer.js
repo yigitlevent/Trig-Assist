@@ -171,13 +171,23 @@ export default class CanvasDrawer {
     // Write sec values
     if(this.trigVisible.sec){
       this.textAlignTopBottomInwards(radians);
-      this.ctx.fillText(Math.abs((1/Math.cos(radians)).toFixed(2)), secLineEndX+((circleCentreX-secLineEndX)/2), circleCentreY);
+      this.ctx.fillText(Math.abs((1/Math.sin(radians)).toFixed(2)), 
+        (this.circle.isInLeftQuadrants(radians))
+          ? Math.max(30, secLineEndX+((circleCentreX-secLineEndX)/2)) 
+          : Math.min(this.width-30, secLineEndX+((circleCentreX-secLineEndX)/2)),
+        circleCentreY
+      );
     }
 
     // Write cosec values
     if(this.trigVisible.csc){
       this.textAlignRightLeftInwards(radians);
-      this.ctx.fillText(Math.abs((1/Math.sin(radians)).toFixed(2)), circleCentreX, cosecLineEndY+((circleCentreY-cosecLineEndY)/2));
+      this.ctx.fillText(Math.abs((1/Math.sin(radians)).toFixed(2)), 
+        circleCentreX, 
+        (this.circle.isInTopQuadrants(radians))
+          ? Math.max(10, cosecLineEndY+((circleCentreY-cosecLineEndY)/2)) 
+          : Math.min(this.height-10, cosecLineEndY+((circleCentreY-cosecLineEndY)/2))
+      );
     }
 
     // Write tan values
@@ -185,7 +195,12 @@ export default class CanvasDrawer {
       this.textAlignOutwards(radians);
       const lineEndXToSecLineEndX = secLineEndX-lineEndX;
       const lineEndYToSecLineEndY = circleCentreY-lineEndY;
-      this.ctx.fillText(Math.abs(Math.tan(radians).toFixed(2)), lineEndX+(lineEndXToSecLineEndX/2), circleCentreY-lineEndYToSecLineEndY/2);
+      this.ctx.fillText(Math.abs(Math.tan(radians).toFixed(2)), 
+        (this.circle.isInTopQuadrants(radians))
+          ? Math.max(60, lineEndX+(lineEndXToSecLineEndX/2)) 
+          : Math.min(this.height-60, lineEndX+(lineEndXToSecLineEndX/2)),
+        circleCentreY-lineEndYToSecLineEndY/2
+      );
     }
 
     // Write cotan values
@@ -193,7 +208,12 @@ export default class CanvasDrawer {
       this.textAlignOutwards(radians);
       const lineEndXToCosecLineEndX = lineEndX-circleCentreX;
       const lineEndYToCosecLineEndY = lineEndY-cosecLineEndY
-      this.ctx.fillText(Math.abs(Math.atan(radians).toFixed(2)), lineEndX-(lineEndXToCosecLineEndX/2), lineEndY-(lineEndYToCosecLineEndY/2));
+      this.ctx.fillText(Math.abs(Math.atan(radians).toFixed(2)), 
+        lineEndX-(lineEndXToCosecLineEndX/2), 
+        (this.circle.isInTopQuadrants(radians))
+          ? Math.max(20, lineEndY-(lineEndYToCosecLineEndY/2)) 
+          : Math.min(this.height-20, lineEndY-(lineEndYToCosecLineEndY/2))
+      );
     }
   }
 
